@@ -492,11 +492,7 @@ void CMulticamEx::Callback(PMCSIGNALINFO SigInfo)
 	switch(SigInfo->Signal)
 	{
 	case MC_SIG_SURFACE_PROCESSING:
-#ifdef _WIN64
-		McGetParamInt64(SigInfo->SignalInfo, MC_SurfaceAddr, (PINT64) &m_pBuffer); 
-#else  
-		McGetParamInt(SigInfo->SignalInfo, MC_SurfaceAddr, (PINT32) &m_pBuffer);
-#endif
+		McGetParamPtr(SigInfo->SignalInfo, MC_SurfaceAddr, &m_pBuffer); 
 		memcpy(m_pbyBuffer, m_pBuffer, m_nSize);
 		SetEvent(m_hGrabDone);
 		
