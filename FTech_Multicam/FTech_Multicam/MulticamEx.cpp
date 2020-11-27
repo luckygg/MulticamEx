@@ -233,7 +233,7 @@ bool CMulticamEx::OnInitPicoloBoard(int nIdx, Picolo::EConnector connector, Pico
 	result = McSetParamInt(m_hChannel, MC_DriverIndex, nIdx);
 	if(result != MC_OK) { m_strErrMsg = GetErrorMsg(result); return false; }
 
-	//VID1~VID16 ¹× YC1~YC4´Â McParams.h ¿¡¼­ ¼ø¼­´ë·Î Á¤ÀÇµÇ¾î ÀÖ´Ù.
+	//VID1~VID16 ë° YC1~YC4ëŠ” McParams.h ì—ì„œ ìˆœì„œëŒ€ë¡œ ì •ì˜ë˜ì–´ ìžˆë‹¤.
 	if (connector >= Picolo::EVID1 && connector <= Picolo::EVID16)
 	{
 		int index = connector - Picolo::EVID1;
@@ -812,7 +812,7 @@ bool CMulticamEx::OnSaveImage(CString strPath)
 	if (m_bOpened == false) return false;
 	if (strPath.IsEmpty() == true) return false;
 
-	// DIB ÆÄÀÏÀÇ ³»¿ëÀ» ±¸¼ºÇÑ´Ù.
+	// DIB íŒŒì¼ì˜ ë‚´ìš©ì„ êµ¬ì„±í•œë‹¤.
 	BITMAPFILEHEADER dib_format_layout;
 	ZeroMemory(&dib_format_layout, sizeof(BITMAPFILEHEADER));
 	dib_format_layout.bfType = 0x4D42;//*(WORD*)"BM";
@@ -821,7 +821,7 @@ bool CMulticamEx::OnSaveImage(CString strPath)
 	
 	dib_format_layout.bfSize = dib_format_layout.bfOffBits + m_pBmpInfo->bmiHeader.biSizeImage;
 
-	// DIB ÆÄÀÏÀ» »ý¼ºÇÑ´Ù.
+	// DIB íŒŒì¼ì„ ìƒì„±í•œë‹¤.
 	char path[MAX_PATH] = {0,};
 	size_t szCvt = 0;
 	wcstombs_s(&szCvt, path, strPath.GetLength()+1, strPath, _TRUNCATE);
@@ -841,7 +841,7 @@ bool CMulticamEx::OnSaveImage(CString strPath)
 		fwrite(&dib_format_layout, 1, sizeof(BITMAPFILEHEADER), p_file);
 		fwrite(m_pBmpInfo, 1, sizeof(BITMAPINFOHEADER), p_file);
 		fwrite(m_pBmpInfo->bmiColors, sizeof(m_pBmpInfo->bmiColors), 256, p_file);
-		fwrite(pBuffer, 1, w*h*8/bpp, p_file);
+		fwrite(pBuffer, 1, w*h*bpp/8, p_file);
 		fclose(p_file);
 	}
 
